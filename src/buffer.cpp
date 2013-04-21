@@ -33,7 +33,14 @@ extern "C" buffer* buffer_open(const char *path, const char *mode) {
  * Close the file related to the provided buffer.
  */
 extern "C" int buffer_close(buffer *b) {
-  int result = fclose((*b).file);
+  int result;
+
+  if ((*b).file) {
+    result = fclose((*b).file);
+  }
+  else {
+    result = -1;
+  }
 
   buffer_destroy(b);
 
