@@ -8,6 +8,7 @@
 extern "C" buffer* buffer_create() {
   buffer *b = (buffer *) malloc(sizeof(buffer));
 
+  (*b).path = NULL;
   (*b).modified = false;
 
   return b;
