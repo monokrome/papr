@@ -2,17 +2,16 @@
 #include <buffer.h>
 #include "types.h"
 
-
 /**
  * Reset a buffer's data to defaults.
  */
 extern "C" void buffer_reset(buffer *b) {
   (*b).path = NULL;
   (*b).file = 0;
-  (*b).size = NULL;
+  (*b).size = 0;
   (*b).modified = false;
+  (*b).firstSegment = NULL;
 }
-
 
 /**
  * Create a new buffer.
@@ -64,5 +63,74 @@ extern "C" int buffer_close(buffer *b) {
 /**
  * Free memory for the provided buffer.
  */
-extern "C" void buffer_destroy(buffer *b) { free(b); }
+extern "C" void buffer_destroy(buffer *b) {
+  if ((*b).firstSegment != NULL) {
+    buffer_segment_destroy((*b).firstSegment);
+  }
+
+  free(b);
+}
+
+/**
+ * Reset the contents of a bufferSegment to defaults.
+ */
+extern "C" void buffer_segment_reset(bufferSegment *segment) {
+  // TODO: Initialize (*segment).content.
+
+  (*segment).previousSegment = NULL;
+  (*segment).nextSegment = NULL;
+}
+
+/**
+ * Creates a new gap list item.
+ */
+extern "C" bufferSegment* buffer_segment_create() {
+  bufferSegment *segment = (bufferSegment *) malloc(sizeof(bufferSegment));
+
+  buffer_segment_reset(segment);
+
+  return segment;
+}
+
+/**
+ * Unlink the provided segment from it's list. Returns a replacement for it.
+ *
+ * Unlinks the provided segment from it's list. Returns the previous segment
+ * unless one does not exist. At which point, it will return the next segment.
+ * The return value is useful in the following ways:
+ *
+ * - If this returns NULL, you have unlinked all segments in the list. Any
+ *   related buffers do not have any content at this time.
+ *
+ * - If this returns the segment which was segment.previousSegment, then the
+ *   chain is still in tact.
+ *
+ * - If this returns the segment which was segment.nextSegment, the returned
+ *   segment should be the new firstSegment in any related buffers.
+ */
+extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
+  bufferSegment *replacement;
+
+  if ((*segment).previousSegment) {
+    replacement = (*segment).previousSegment;
+  }
+  else {
+    replacement = (*segment).nextSegment;
+  }
+
+  // Set up previousSegment.nextSegment to point to this segment's nextSegment 
+  if ((*segment).previousSegment != NULL) {
+    (*(*segment).previousSegment).nextSegment = (*segment).nextSegment;
+  }
+
+  (*segment).previousSegment = NULL;
+  (*segment).nextSegment = NULL;
+
+  return replacement;
+}
+
+extern "C" void buffer_segment_destroy(bufferSegment *segment) {
+  // TODO: Decide whether the unlink here should be assumed or not
+  buffer_segment_unlink(segment);
+}
 
