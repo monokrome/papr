@@ -42,8 +42,6 @@ extern "C" int buffer_close(buffer *b) {
     result = -1L;
   }
 
-  buffer_destroy(b);
-
   return result;
 }
 
