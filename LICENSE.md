@@ -1,4 +1,4 @@
-Copyright © 2007 Brandon R. Stoner. <http://monokro.me/>
+Copyright © 2013 Brandon R. Stoner. <http://monokro.me/>
 
 Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
 
