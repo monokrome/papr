@@ -6,7 +6,9 @@
  * Create a new buffer.
  */
 extern "C" buffer* buffer_create() {
-  return (buffer *) malloc(sizeof(buffer));
+  buffer *b = (buffer *) malloc(sizeof(buffer));
+
+  return b;
 }
 
 /**
@@ -17,6 +19,12 @@ extern "C" buffer* buffer_open(const char *path, const char *mode) {
 
   (*b).path = path;
   (*b).file = fopen(path, mode);
+
+  if ((*b).file) {
+    fseek((*b).file, 0, SEEK_END);
+
+    (*b).size = ftell((*b).file);
+  }
 
   return b;
 }

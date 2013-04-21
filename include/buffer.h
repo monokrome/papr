@@ -3,6 +3,7 @@
 struct buffer {
   const char *path;
   FILE *file;
+  int size;
 };
 
 buffer* buffer_create();
