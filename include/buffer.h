@@ -4,6 +4,8 @@ struct buffer {
   const char *path;
   FILE *file;
   int size;
+
+  bool modified;
 };
 
 buffer* buffer_create();
