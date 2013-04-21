@@ -8,11 +8,11 @@ struct buffer {
   bool modified;       // true if the buffer's content differs from it's file
 };
 
+void buffer_reset(buffer *b);
+
 buffer* buffer_create();
 void buffer_destroy(buffer *b);
 
 buffer* buffer_open(const char *path, const char *mode);
 int buffer_close(buffer *b);
-
-void buffer_reset(buffer *b);
 
