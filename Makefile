@@ -1,7 +1,7 @@
 cc=clang++
 cflags=-Wall -Wextra -Werror -Wno-long-long -Wno-variadic-macros -fexceptions -DNDEBUG -std=c++11 -x c++ -I ./include
 
-core_objects=lib/papr.o
+core_objects=papr.o
 core_binary=bin/papr
 
 lib_dir=lib/
@@ -13,7 +13,7 @@ all: ${core_binary}
 
 ${core_binary}: ${core_objects}
 	@${mkdir} ${bin_dir}
-	${cc} ${core_objects} -o $@
+	${cc} ${patsubst %, lib/%, ${core_objects}} -o $@
 
 %.o: src/%.cpp
 	@${mkdir} ${lib_dir}
