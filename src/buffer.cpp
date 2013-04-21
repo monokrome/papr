@@ -39,7 +39,7 @@ extern "C" int buffer_close(buffer *b) {
     result = fclose((*b).file);
   }
   else {
-    result = -1;
+    result = -1L;
   }
 
   buffer_destroy(b);
