@@ -2,15 +2,25 @@
 #include <buffer.h>
 #include "types.h"
 
+
+/**
+ * Reset a buffer's data to defaults.
+ */
+extern "C" void buffer_reset(buffer *b) {
+  (*b).path = NULL;
+  (*b).file = 0;
+  (*b).size = NULL;
+  (*b).modified = false;
+}
+
+
 /**
  * Create a new buffer.
  */
 extern "C" buffer* buffer_create() {
   buffer *b = (buffer *) malloc(sizeof(buffer));
 
-  (*b).path = NULL;
-  (*b).modified = false;
-  (*b).file = 0;
+  buffer_reset(b);
 
   return b;
 }
@@ -19,10 +29,11 @@ extern "C" buffer* buffer_create() {
  * Open a specific file and return it as a buffer.
  */
 extern "C" buffer* buffer_open(const char *path, const char *mode) {
-  buffer *b = buffer_create();
+  buffer *b = (buffer *) malloc(sizeof(buffer));
 
   (*b).path = path;
   (*b).file = fopen(path, mode);
+  (*b).modified = false;
 
   if ((*b).file) {
     fseek((*b).file, 0, SEEK_END);
