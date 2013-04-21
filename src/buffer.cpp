@@ -132,5 +132,7 @@ extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
 extern "C" void buffer_segment_destroy(bufferSegment *segment) {
   // TODO: Decide whether the unlink here should be assumed or not
   buffer_segment_unlink(segment);
+
+  free(segment);
 }
 
