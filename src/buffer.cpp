@@ -10,6 +10,7 @@ extern "C" buffer* buffer_create() {
 
   (*b).path = NULL;
   (*b).modified = false;
+  (*b).file = 0;
 
   return b;
 }
