@@ -1,7 +1,13 @@
+#include <stdio.h>
+
 struct buffer {
-  char *path;
+  const char *path;
+  FILE *file;
 };
 
 buffer* buffer_create();
 void buffer_destroy(buffer *b);
+
+buffer* buffer_open(const char *path, const char *mode);
+int buffer_close(buffer *b);
 
