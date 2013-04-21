@@ -36,3 +36,5 @@ void buffer_segment_reset(bufferSegment *segment);
 bufferSegment* buffer_segment_create();
 void buffer_segment_destroy(bufferSegment *gap);
 
+bufferSegment* buffer_segment_unlink(bufferSegment *segment);
+
