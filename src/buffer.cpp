@@ -47,7 +47,7 @@ extern "C" buffer* buffer_open(const char *path, const char *mode) {
  * Close the file related to the provided buffer.
  */
 extern "C" int buffer_close(buffer *b) {
-  auto result;
+  int result;
 
   if ((*b).file) {
     result = fclose((*b).file);
@@ -109,7 +109,7 @@ extern "C" bufferSegment* buffer_segment_create() {
  *   segment should be the new firstSegment in any related buffers.
  */
 extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
-  auto *replacement;
+  bufferSegment *replacement;
 
   // Set up previousSegment.nextSegment to point to this segment's nextSegment 
   if ((*segment).previousSegment != NULL) {
