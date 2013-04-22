@@ -17,7 +17,7 @@ extern "C" void buffer_reset(buffer *b) {
  * Create a new buffer.
  */
 extern "C" buffer* buffer_create() {
-  buffer *b = (buffer *) malloc(sizeof(buffer));
+  auto *b = (buffer *) malloc(sizeof(buffer));
 
   buffer_reset(b);
 
@@ -28,7 +28,7 @@ extern "C" buffer* buffer_create() {
  * Open a specific file and return it as a buffer.
  */
 extern "C" buffer* buffer_open(const char *path, const char *mode) {
-  buffer *b = (buffer *) malloc(sizeof(buffer));
+  auto *b = (buffer *) malloc(sizeof(buffer));
 
   (*b).path = path;
   (*b).file = fopen(path, mode);
@@ -47,7 +47,7 @@ extern "C" buffer* buffer_open(const char *path, const char *mode) {
  * Close the file related to the provided buffer.
  */
 extern "C" int buffer_close(buffer *b) {
-  int result;
+  auto result;
 
   if ((*b).file) {
     result = fclose((*b).file);
@@ -85,21 +85,11 @@ extern "C" void buffer_segment_reset(bufferSegment *segment) {
  * Creates a new buffer segment.
  */
 extern "C" bufferSegment* buffer_segment_create() {
-  bufferSegment *segment = (bufferSegment *) malloc(sizeof(bufferSegment));
+  auto *segment = (bufferSegment *) malloc(sizeof(bufferSegment));
 
   buffer_segment_reset(segment);
 
   return segment;
-}
-
-/**
- * Free memory related to the provided buffer segment.
- */
-extern "C" void buffer_segment_destroy(bufferSegment *segment) {
-  // TODO: Decide whether the unlink here should be assumed or not
-  buffer_segment_unlink(segment);
-
-  free(segment);
 }
 
 /**
@@ -119,7 +109,7 @@ extern "C" void buffer_segment_destroy(bufferSegment *segment) {
  *   segment should be the new firstSegment in any related buffers.
  */
 extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
-  bufferSegment *replacement;
+  auto *replacement;
 
   // Set up previousSegment.nextSegment to point to this segment's nextSegment 
   if ((*segment).previousSegment != NULL) {
@@ -135,5 +125,15 @@ extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
   (*segment).nextSegment = NULL;
 
   return replacement;
+}
+
+/**
+ * Free memory related to the provided buffer segment.
+ */
+extern "C" void buffer_segment_destroy(bufferSegment *segment) {
+  // TODO: Decide whether the unlink here should be assumed or not
+  buffer_segment_unlink(segment);
+
+  free(segment);
 }
 
