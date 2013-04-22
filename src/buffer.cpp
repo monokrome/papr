@@ -111,16 +111,14 @@ extern "C" bufferSegment* buffer_segment_create() {
 extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
   bufferSegment *replacement;
 
-  if ((*segment).previousSegment) {
+  // Set up previousSegment.nextSegment to point to this segment's nextSegment 
+  if ((*segment).previousSegment != NULL) {
+    (*(*segment).previousSegment).nextSegment = (*segment).nextSegment;
+
     replacement = (*segment).previousSegment;
   }
   else {
     replacement = (*segment).nextSegment;
-  }
-
-  // Set up previousSegment.nextSegment to point to this segment's nextSegment 
-  if ((*segment).previousSegment != NULL) {
-    (*(*segment).previousSegment).nextSegment = (*segment).nextSegment;
   }
 
   (*segment).previousSegment = NULL;
