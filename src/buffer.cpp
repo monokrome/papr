@@ -93,6 +93,16 @@ extern "C" bufferSegment* buffer_segment_create() {
 }
 
 /**
+ * Free memory related to the provided buffer segment.
+ */
+extern "C" void buffer_segment_destroy(bufferSegment *segment) {
+  // TODO: Decide whether the unlink here should be assumed or not
+  buffer_segment_unlink(segment);
+
+  free(segment);
+}
+
+/**
  * Unlink the provided segment from it's list. Returns a replacement for it.
  *
  * Unlinks the provided segment from it's list. Returns the previous segment
@@ -125,15 +135,5 @@ extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
   (*segment).nextSegment = NULL;
 
   return replacement;
-}
-
-/**
- * Free memory related to the provided buffer segment.
- */
-extern "C" void buffer_segment_destroy(bufferSegment *segment) {
-  // TODO: Decide whether the unlink here should be assumed or not
-  buffer_segment_unlink(segment);
-
-  free(segment);
 }
 
