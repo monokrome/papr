@@ -82,7 +82,7 @@ extern "C" void buffer_segment_reset(bufferSegment *segment) {
 }
 
 /**
- * Creates a new gap list item.
+ * Creates a new buffer segment.
  */
 extern "C" bufferSegment* buffer_segment_create() {
   bufferSegment *segment = (bufferSegment *) malloc(sizeof(bufferSegment));
@@ -129,6 +129,9 @@ extern "C" bufferSegment* buffer_segment_unlink(bufferSegment *segment) {
   return replacement;
 }
 
+/**
+ * Free memory related to the provided buffer segment.
+ */
 extern "C" void buffer_segment_destroy(bufferSegment *segment) {
   // TODO: Decide whether the unlink here should be assumed or not
   buffer_segment_unlink(segment);
